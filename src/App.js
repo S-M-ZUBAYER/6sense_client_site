@@ -1,23 +1,32 @@
 import logo from './logo.svg';
 import './App.css';
+import EmployeeInfo from './component/EmployeeInfo';
+import AllUser from './component/AllUser';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Details from './component/Details';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <EmployeeInfo></EmployeeInfo>
+    },
+    {
+
+      path: '/details/:id',
+      element: <Details></Details>,
+      loader: ({ params }) => fetch(`http://localhost:5000/users/${params?.id}`)
+    }
+  ])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <RouterProvider router={router}>
+        <Toaster />
+      </RouterProvider>
+
     </div>
   );
 }
